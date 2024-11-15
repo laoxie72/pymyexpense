@@ -21,7 +21,8 @@ try:
         # 获取查询结果并转换为列表
         result = cursor.fetchall()
         ages = [row[0] for row in result]
-        print(result)
+        # 输出查询的结果
+        # print(result)
 
         # 检查数据是否为空
         if ages:
@@ -30,7 +31,7 @@ try:
             variance_cash = statistics.variance(ages)
 
             # print(f"花费的平均值: {avg_cash}")
-            print(f"花费的方差: {variance_cash}")
+            # print(f"花费的方差: {variance_cash}")
         else:
             print("没有符合条件的数据。")
 
@@ -42,7 +43,7 @@ try:
         # 获取查询结果并转换为列表（数组）
         result1 = cursor1.fetchall()
         overspend = [row[0] for row in result1]
-        print("筛选的日期:", overspend)
+        # print("筛选的日期:", overspend)
 
         # 检查数据是否为空
         if overspend:
@@ -54,9 +55,30 @@ try:
 
             # 按日期排序并输出
             df = df.sort_values(by='日期', ascending=True)
-            print("日期出现次数表格：\n", df)
+            # print("日期出现次数表格：\n", df)
         else:
             print("没有符合条件的数据。")
+
+    # 生成 Markdown 内容
+    markdown_content = "# 数据分析结果\n\n"
+
+    # 添加第一个查询结果
+    markdown_content += "## 金额（可执行）数据分析\n\n"
+    if avg_cash is not None and variance_cash is not None:
+        markdown_content += f"- 平均值: {avg_cash}\n"
+        markdown_content += f"- 方差: {variance_cash}\n\n"
+    else:
+        markdown_content += "- 没有符合条件的数据。\n\n"
+
+    # 添加第二个查询结果
+    markdown_content += "## 日期出现次数统计\n\n"
+    markdown_content += df.to_markdown(index=False)
+
+    # 保存为 Markdown 文件
+    with open("result.md", "w", encoding="utf-8") as file:
+        file.write(markdown_content)
+
+    print("Markdown 文件已生成，保存为 'result.md'")
 
 
 
