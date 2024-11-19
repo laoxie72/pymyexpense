@@ -64,7 +64,7 @@ try:
         # 保存图片为 PNG 文件
         plt.savefig("output.png", format="png", dpi=300, bbox_inches="tight")
 
-        plt.show()
+        # plt.show()
     else:
         print("没有数据可绘制。")
 
