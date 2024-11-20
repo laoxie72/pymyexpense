@@ -64,10 +64,10 @@ try:
             plt.grid(True)
 
             # 保存图片为 PNG 文件
-            # plt.savefig("scatter_fit.png", format="png", dpi=300, bbox_inches="tight")
+            plt.savefig("scatter_fit.png", format="png", dpi=300, bbox_inches="tight")
 
             # 显示图表
-            # plt.show()
+            plt.show()
 
 # 线性机器学习预测
     with connection.cursor() as cursor:
@@ -103,9 +103,9 @@ try:
             print(f"预测的下一个消费金额: {next_value:.2f}")
 
             # 绘制数据与预测结果
-            plt.scatter(indices, data, color="blue", label="实际数据")
-            plt.plot(indices, model.predict(indices), color="red", label="拟合曲线")
-            plt.scatter(next_index, next_value, color="green", label="预测值", zorder=5)
+            plt.scatter(indices, data, color="blue", label="data")
+            plt.plot(indices, model.predict(indices), color="red", label="curve")
+            plt.scatter(next_index, next_value, color="green", label="prediction", zorder=5)
             plt.annotate(f"{next_value:.2f}",
                          (next_index[0][0], next_value),
                          textcoords="offset points",
@@ -115,17 +115,17 @@ try:
                          color='green')
 
             # 图表设置
-            plt.xlabel("数据索引")
-            plt.ylabel("金额（可执行）")
-            plt.title("机器学习预测：金额变化趋势")
+            plt.xlabel("data Index")
+            plt.ylabel("expense")
+            plt.title("ml linear model prediction")
             plt.legend()
             plt.grid(True)
 
             # 保存图像
-            # plt.savefig("ml_prediction.png", format="png", dpi=300, bbox_inches="tight")
+            plt.savefig("ml_prediction.png", format="png", dpi=300, bbox_inches="tight")
 
             # 显示图表
-            # plt.show()
+            plt.show()
 
 # 使用随机森林做拟合预测
     with connection.cursor() as cursor:
@@ -158,9 +158,9 @@ try:
             dense_indices = np.linspace(0, len(data), 500).reshape(-1, 1)
             dense_predictions = model.predict(dense_indices)
 
-            plt.scatter(indices, data, color="blue", label="实际数据")
-            plt.plot(dense_indices, dense_predictions, color="red", label="拟合曲线")
-            plt.scatter(next_index, next_value, color="green", label="预测值", zorder=5)
+            plt.scatter(indices, data, color="blue", label="data")
+            plt.plot(dense_indices, dense_predictions, color="red", label="curve")
+            plt.scatter(next_index, next_value, color="green", label="predicion", zorder=5)
             plt.annotate(f"{next_value:.2f}",
                          (next_index[0][0], next_value),
                          textcoords="offset points",
@@ -169,12 +169,12 @@ try:
                          fontsize=10,
                          color='green')
 
-            plt.xlabel("数据索引")
-            plt.ylabel("金额（可执行）")
-            plt.title("随机森林预测：金额变化趋势")
+            plt.xlabel("data Index")
+            plt.ylabel("expense")
+            plt.title("ml random forest model prediction")
             plt.legend()
             plt.grid(True)
-            # plt.savefig("ml_rf_prediction.png", format="png", dpi=300, bbox_inches="tight")
+            plt.savefig("ml_rf_prediction.png", format="png", dpi=300, bbox_inches="tight")
             plt.show()
 
 # 使用SVR向量机预测
@@ -208,9 +208,9 @@ try:
             dense_indices = np.linspace(0, len(data), 500).reshape(-1, 1)
             dense_predictions = model.predict(dense_indices)
 
-            plt.scatter(indices, data, color="blue", label="实际数据")
-            plt.plot(dense_indices, dense_predictions, color="red", label="拟合曲线")
-            plt.scatter(next_index, next_value, color="green", label="预测值", zorder=5)
+            plt.scatter(indices, data, color="blue", label="data")
+            plt.plot(dense_indices, dense_predictions, color="red", label="curve")
+            plt.scatter(next_index, next_value, color="green", label="prediction", zorder=5)
             plt.annotate(f"{next_value:.2f}",
                          (next_index[0][0], next_value),
                          textcoords="offset points",
@@ -219,9 +219,9 @@ try:
                          fontsize=10,
                          color='green')
 
-            plt.xlabel("数据索引")
-            plt.ylabel("金额（可执行）")
-            plt.title("随机森林预测：金额变化趋势")
+            plt.xlabel("data Index")
+            plt.ylabel("expense")
+            plt.title("ml svr model prediction")
             plt.legend()
             plt.grid(True)
             plt.savefig("ml_rf_SVR_prediction.png", format="png", dpi=300, bbox_inches="tight")
