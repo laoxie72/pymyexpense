@@ -44,10 +44,10 @@ try:
             # 预测下一个消费金额
             next_index = len(indices)  # 下一个数据点的索引
             next_value = polynomial(next_index)  # 使用模型预测值
-            print(f"预测的下一个消费金额: {next_value:.2f}")
+            print(f"三次多项式拟合预测的下一个消费金额: {next_value:.2f}")
 
             # 标注预测值在图表中
-            plt.scatter([next_index], [next_value], color='green', label='预测值', zorder=5)
+            plt.scatter([next_index], [next_value], color='green', label='prediction', zorder=5)
             plt.annotate(f"{next_value:.2f}",
                          (next_index, next_value),
                          textcoords="offset points",
@@ -67,7 +67,7 @@ try:
             plt.savefig("scatter_fit.png", format="png", dpi=300, bbox_inches="tight")
 
             # 显示图表
-            plt.show()
+            # plt.show()
 
 # 线性机器学习预测
     with connection.cursor() as cursor:
@@ -95,12 +95,12 @@ try:
             # 测试模型性能
             y_pred = model.predict(X_test)
             mse = mean_squared_error(y_test, y_pred)
-            print(f"模型均方误差 (MSE): {mse:.2f}")
+            print(f"ml_lr模型均方误差 (MSE): {mse:.2f}")
 
             # 使用模型预测下一个消费金额
             next_index = np.array([[len(data)]])  # 下一个索引
             next_value = model.predict(next_index)[0]  # 模型预测值
-            print(f"预测的下一个消费金额: {next_value:.2f}")
+            print(f"ml_lr预测的下一个消费金额: {next_value:.2f}")
 
             # 绘制数据与预测结果
             plt.scatter(indices, data, color="blue", label="data")
@@ -125,7 +125,7 @@ try:
             plt.savefig("ml_prediction.png", format="png", dpi=300, bbox_inches="tight")
 
             # 显示图表
-            plt.show()
+            # plt.show()
 
 # 使用随机森林做拟合预测
     with connection.cursor() as cursor:
@@ -149,11 +149,11 @@ try:
 
             y_pred = model.predict(X_test)
             mse = mean_squared_error(y_test, y_pred)
-            print(f"模型均方误差 (MSE): {mse:.2f}")
+            print(f"ml_rf模型均方误差 (MSE): {mse:.2f}")
 
             next_index = np.array([[len(data)]])
             next_value = model.predict(next_index)[0]
-            print(f"预测的下一个消费金额: {next_value:.2f}")
+            print(f"ml_rf预测的下一个消费金额: {next_value:.2f}")
 
             dense_indices = np.linspace(0, len(data), 500).reshape(-1, 1)
             dense_predictions = model.predict(dense_indices)
@@ -175,7 +175,7 @@ try:
             plt.legend()
             plt.grid(True)
             plt.savefig("ml_rf_prediction.png", format="png", dpi=300, bbox_inches="tight")
-            plt.show()
+            # plt.show()
 
 # 使用SVR向量机预测
     with connection.cursor() as cursor:
@@ -199,11 +199,11 @@ try:
 
             y_pred = model.predict(X_test)
             mse = mean_squared_error(y_test, y_pred)
-            print(f"模型均方误差 (MSE): {mse:.2f}")
+            print(f"ml_rf_SVR模型均方误差 (MSE): {mse:.2f}")
 
             next_index = np.array([[len(data)]])
             next_value = model.predict(next_index)[0]
-            print(f"预测的下一个消费金额: {next_value:.2f}")
+            print(f"ml_rf_SVR预测的下一个消费金额: {next_value:.2f}")
 
             dense_indices = np.linspace(0, len(data), 500).reshape(-1, 1)
             dense_predictions = model.predict(dense_indices)
@@ -225,8 +225,7 @@ try:
             plt.legend()
             plt.grid(True)
             plt.savefig("ml_rf_SVR_prediction.png", format="png", dpi=300, bbox_inches="tight")
-            plt.show()
-
+            # plt.show()
 
 finally:
     connection.close()
