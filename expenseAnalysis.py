@@ -16,6 +16,9 @@ connection = pymysql.connect(
 )
 
 try:
+    # 存储所有模型的预测值
+    predictions = []
+
     with connection.cursor() as cursor:
         # 查询数据
         query = "SELECT `金额（可执行）` FROM `table_detail` WHERE `项目` != '小结' AND `金额（可执行）` < 0;"
@@ -44,6 +47,8 @@ try:
             # 预测下一个消费金额
             next_index = len(indices)  # 下一个数据点的索引
             next_value = polynomial(next_index)  # 使用模型预测值
+            predictions.append(next_value)  # 添加三次多项式的预测值
+
             print(f"三次多项式拟合预测的下一个消费金额: {next_value:.2f}")
 
             # 标注预测值在图表中
@@ -100,6 +105,8 @@ try:
             # 使用模型预测下一个消费金额
             next_index = np.array([[len(data)]])  # 下一个索引
             next_value = model.predict(next_index)[0]  # 模型预测值
+            predictions.append(next_value)  # 添加线性回归的预测值
+
             print(f"ml_lr预测的下一个消费金额: {next_value:.2f}")
 
             # 绘制数据与预测结果
@@ -153,6 +160,8 @@ try:
 
             next_index = np.array([[len(data)]])
             next_value = model.predict(next_index)[0]
+            predictions.append(next_value)  # 添加随机森林的预测值
+
             print(f"ml_rf预测的下一个消费金额: {next_value:.2f}")
 
             dense_indices = np.linspace(0, len(data), 500).reshape(-1, 1)
@@ -203,6 +212,8 @@ try:
 
             next_index = np.array([[len(data)]])
             next_value = model.predict(next_index)[0]
+            predictions.append(next_value)  # 添加SVR的预测值
+
             print(f"ml_rf_SVR预测的下一个消费金额: {next_value:.2f}")
 
             dense_indices = np.linspace(0, len(data), 500).reshape(-1, 1)
@@ -226,6 +237,51 @@ try:
             plt.grid(True)
             plt.savefig("ml_rf_SVR_prediction.png", format="png", dpi=300, bbox_inches="tight")
             # plt.show()
+    # # 截断到小数点后 5 位
+    # formatted_predictions = [round(value, 5) for value in predictions]
+    #
+    # # 计算均值和方差
+    # mean_value = round(np.mean(predictions), 5)  # 均值
+    # variance_value = round(np.var(predictions), 5)  # 总体方差
+    # sample_variance = round(np.var(predictions, ddof=1), 5)  # 样本方差
+
+    # 计算均值和方差
+    mean_value = np.mean(predictions)  # 计算均值
+    variance_value = np.var(predictions)  # 计算总体方差
+    sample_variance = np.var(predictions, ddof=1)  # 计算样本方差
+
+    # 构建 Markdown 表格
+    table_header = "| 序号 | 预测值 |\n| -------- | ----------------------- |"
+    table_rows = "\n".join(
+        f"| {i + 1}    | {value:.5f}              |" for i, value in enumerate(predictions)
+    )
+
+    # 输出结果
+    output_text = f"""
+# 模型预测结果分析
+    
+## 预测值列表
+{table_header}
+{table_rows}
+    
+## 统计分析
+- **均值**: {mean_value:.2f}
+- **总体方差**: {variance_value:.2f}
+- **样本方差**: {sample_variance:.2f}
+"""
+
+    # 将结果写入 .md 文件
+    prediction_output = "model_predictions.md"
+    with open(prediction_output, "w", encoding="utf-8") as file:
+        file.write(output_text)
+
+    print(f"结果已保存到 {prediction_output}")
+
+    # 输出结果
+    # print(f"预测值列表: {predictions}")
+    # print(f"均值: {mean_value:.2f}")
+    # print(f"总体方差: {variance_value:.2f}")
+    # print(f"样本方差: {sample_variance:.2f}")
 
 finally:
     connection.close()
