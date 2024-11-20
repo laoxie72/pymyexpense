@@ -4,6 +4,8 @@ import pymysql
 from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.svm import SVR
 from sklearn.metrics import mean_squared_error
 
 connection = pymysql.connect(
@@ -65,7 +67,7 @@ try:
             # plt.savefig("scatter_fit.png", format="png", dpi=300, bbox_inches="tight")
 
             # 显示图表
-            plt.show()
+            # plt.show()
 
 # 线性机器学习预测
     with connection.cursor() as cursor:
@@ -123,7 +125,108 @@ try:
             # plt.savefig("ml_prediction.png", format="png", dpi=300, bbox_inches="tight")
 
             # 显示图表
+            # plt.show()
+
+# 使用随机森林做拟合预测
+    with connection.cursor() as cursor:
+        query = "SELECT `金额（可执行）` FROM `table_detail` WHERE `项目` != '小结' AND `金额（可执行）` < 0;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+
+        data = [row[0] for row in result]
+        indices = np.array(range(len(data))).reshape(-1, 1)
+
+        if not data:
+            print("没有符合条件的数据。")
+        else:
+            X_train, X_test, y_train, y_test = train_test_split(
+                indices, data, test_size=0.2, random_state=42
+            )
+
+            # 使用随机森林替代线性回归
+            model = RandomForestRegressor(n_estimators=100, random_state=42)
+            model.fit(X_train, y_train)
+
+            y_pred = model.predict(X_test)
+            mse = mean_squared_error(y_test, y_pred)
+            print(f"模型均方误差 (MSE): {mse:.2f}")
+
+            next_index = np.array([[len(data)]])
+            next_value = model.predict(next_index)[0]
+            print(f"预测的下一个消费金额: {next_value:.2f}")
+
+            dense_indices = np.linspace(0, len(data), 500).reshape(-1, 1)
+            dense_predictions = model.predict(dense_indices)
+
+            plt.scatter(indices, data, color="blue", label="实际数据")
+            plt.plot(dense_indices, dense_predictions, color="red", label="拟合曲线")
+            plt.scatter(next_index, next_value, color="green", label="预测值", zorder=5)
+            plt.annotate(f"{next_value:.2f}",
+                         (next_index[0][0], next_value),
+                         textcoords="offset points",
+                         xytext=(5, 10),
+                         ha='center',
+                         fontsize=10,
+                         color='green')
+
+            plt.xlabel("数据索引")
+            plt.ylabel("金额（可执行）")
+            plt.title("随机森林预测：金额变化趋势")
+            plt.legend()
+            plt.grid(True)
+            # plt.savefig("ml_rf_prediction.png", format="png", dpi=300, bbox_inches="tight")
             plt.show()
+
+# 使用SVR向量机预测
+    with connection.cursor() as cursor:
+        query = "SELECT `金额（可执行）` FROM `table_detail` WHERE `项目` != '小结' AND `金额（可执行）` < 0;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+
+        data = [row[0] for row in result]
+        indices = np.array(range(len(data))).reshape(-1, 1)
+
+        if not data:
+            print("没有符合条件的数据。")
+        else:
+            X_train, X_test, y_train, y_test = train_test_split(
+                indices, data, test_size=0.2, random_state=42
+            )
+
+            # 使用随机森林替代线性回归
+            model = SVR(kernel='rbf', C=1.0, gamma='scale')
+            model.fit(X_train, y_train)
+
+            y_pred = model.predict(X_test)
+            mse = mean_squared_error(y_test, y_pred)
+            print(f"模型均方误差 (MSE): {mse:.2f}")
+
+            next_index = np.array([[len(data)]])
+            next_value = model.predict(next_index)[0]
+            print(f"预测的下一个消费金额: {next_value:.2f}")
+
+            dense_indices = np.linspace(0, len(data), 500).reshape(-1, 1)
+            dense_predictions = model.predict(dense_indices)
+
+            plt.scatter(indices, data, color="blue", label="实际数据")
+            plt.plot(dense_indices, dense_predictions, color="red", label="拟合曲线")
+            plt.scatter(next_index, next_value, color="green", label="预测值", zorder=5)
+            plt.annotate(f"{next_value:.2f}",
+                         (next_index[0][0], next_value),
+                         textcoords="offset points",
+                         xytext=(5, 10),
+                         ha='center',
+                         fontsize=10,
+                         color='green')
+
+            plt.xlabel("数据索引")
+            plt.ylabel("金额（可执行）")
+            plt.title("随机森林预测：金额变化趋势")
+            plt.legend()
+            plt.grid(True)
+            plt.savefig("ml_rf_SVR_prediction.png", format="png", dpi=300, bbox_inches="tight")
+            plt.show()
+
 
 finally:
     connection.close()
