@@ -30,7 +30,7 @@ try:
 
     # 查询 2: 日期出现次数统计
     with connection.cursor() as cursor:
-        query = "SELECT `日期` FROM table_detail WHERE `金额（可执行）` < -20 AND NOT `项目` = '小结';"
+        query = "SELECT `日期` FROM table_detail WHERE `金额（可执行）` < -15 AND NOT `项目` = '小结';"
         cursor.execute(query)
         result = cursor.fetchall()
         overspend = [row[0] for row in result]

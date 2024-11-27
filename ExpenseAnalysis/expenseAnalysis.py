@@ -18,7 +18,7 @@ connection = pymysql.connect(
 try:
     # 存储所有模型的预测值
     predictions = []
-
+#三次多项式预测模型
     with connection.cursor() as cursor:
         # 查询数据
         query = "SELECT `金额（可执行）` FROM `table_detail` WHERE `项目` != '小结' AND `金额（可执行）` < 0;"
@@ -69,7 +69,7 @@ try:
             plt.grid(True)
 
             # 保存图片为 PNG 文件
-            plt.savefig("scatter_fit.png", format="png", dpi=300, bbox_inches="tight")
+            plt.savefig("polynomial_prediction.png", format="png", dpi=300, bbox_inches="tight")
 
             # 显示图表
             # plt.show()
