@@ -18,7 +18,7 @@ connection = pymysql.connect(
 try:
     # 存储所有模型的预测值
     predictions = []
-#三次多项式预测模型
+#多项式预测模型
     with connection.cursor() as cursor:
         # 查询数据
         query = "SELECT `金额（可执行）` FROM `table_detail` WHERE `项目` != '小结' AND `金额（可执行）` < 0;"
@@ -37,7 +37,7 @@ try:
             plt.scatter(indices, data, color='blue', label='data')
 
             # 拟合线性回归模型
-            coefficients = np.polyfit(indices, data, 3)  # 一次多项式拟合 (线性)
+            coefficients = np.polyfit(indices, data, 10)  # 一次多项式拟合 (线性)
             polynomial = np.poly1d(coefficients)
             fitted_values = polynomial(indices)
 
@@ -49,7 +49,7 @@ try:
             next_value = polynomial(next_index)  # 使用模型预测值
             predictions.append(next_value)  # 添加三次多项式的预测值
 
-            print(f"三次多项式拟合预测的下一个消费金额: {next_value:.2f}")
+            print(f"多项式拟合预测的下一个消费金额: {next_value:.2f}")
 
             # 标注预测值在图表中
             plt.scatter([next_index], [next_value], color='green', label='prediction', zorder=5)
