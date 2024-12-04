@@ -28,6 +28,7 @@ try:
         # 提取数据
         data = [row[0] for row in result]
         indices = list(range(len(data)))  # 用索引代表 x 轴
+        # print(data)
 
         # 检查是否有数据
         if not data:
@@ -37,7 +38,7 @@ try:
             plt.scatter(indices, data, color='blue', label='data')
 
             # 拟合线性回归模型
-            coefficients = np.polyfit(indices, data, 10)  # 一次多项式拟合 (线性)
+            coefficients = np.polyfit(indices, data, 5)  # 一次多项式拟合 (线性)
             polynomial = np.poly1d(coefficients)
             fitted_values = polynomial(indices)
 
