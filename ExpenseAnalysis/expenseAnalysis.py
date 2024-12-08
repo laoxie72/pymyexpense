@@ -52,6 +52,9 @@ try:
 
             print(f"多项式拟合预测的下一个消费金额: {next_value:.2f}")
 
+            # **创建新的图表实例**
+            # plt.figure()
+
             # 标注预测值在图表中
             plt.scatter([next_index], [next_value], color='green', label='prediction', zorder=5)
             plt.annotate(f"{next_value:.2f}",
@@ -110,6 +113,9 @@ try:
 
             print(f"ml_lr预测的下一个消费金额: {next_value:.2f}")
 
+            # **创建新的图表实例**
+            plt.figure()
+
             # 绘制数据与预测结果
             plt.scatter(indices, data, color="blue", label="data")
             plt.plot(indices, model.predict(indices), color="red", label="curve")
@@ -166,6 +172,10 @@ try:
             print(f"ml_rf预测的下一个消费金额: {next_value:.2f}")
 
             dense_indices = np.linspace(0, len(data), 500).reshape(-1, 1)
+
+            # **创建新的图表实例**
+            plt.figure()
+
             dense_predictions = model.predict(dense_indices)
 
             plt.scatter(indices, data, color="blue", label="data")
@@ -219,6 +229,9 @@ try:
 
             dense_indices = np.linspace(0, len(data), 500).reshape(-1, 1)
             dense_predictions = model.predict(dense_indices)
+
+            # **创建新的图表实例**
+            plt.figure()
 
             plt.scatter(indices, data, color="blue", label="data")
             plt.plot(dense_indices, dense_predictions, color="red", label="curve")
