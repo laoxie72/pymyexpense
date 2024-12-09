@@ -38,7 +38,7 @@ try:
             plt.scatter(indices, data, color='blue', label='data')
 
             # 拟合线性回归模型
-            coefficients = np.polyfit(indices, data, 5)  # 一次多项式拟合 (线性)
+            coefficients = np.polyfit(indices, data, 3)  # 一次多项式拟合 (线性)
             polynomial = np.poly1d(coefficients)
             fitted_values = polynomial(indices)
 
