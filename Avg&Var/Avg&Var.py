@@ -53,7 +53,7 @@ try:
     # 绘制金额变化曲线
     if dates and amounts:
         plt.figure(figsize=(10, 6))
-        plt.plot(dates, amounts, marker='o', linestyle='-', color='b', label="vary")
+        plt.plot(dates, amounts, marker='o', linestyle='-', color='b', label="trend")
         plt.xlabel("date")
         plt.ylabel("Expense")
         plt.title("variation")
