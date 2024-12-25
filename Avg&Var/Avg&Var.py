@@ -1,12 +1,8 @@
 import collections
-from turtledemo.penrose import start
-
-import numpy as np
 import pandas as pd
 import pymysql
 import statistics
 from matplotlib import pyplot as plt
-from matplotlib.pyplot import ylabel, yticks
 
 # 连接到 MySQL 数据库
 connection = pymysql.connect(
@@ -56,11 +52,10 @@ try:
 
     # 绘制金额变化曲线
     if dates and amounts:
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(16, 9))
         plt.plot(dates, amounts, marker='o', linestyle='-', color='b', label="trend")
         plt.xlabel("date")
         plt.ylabel("Expense")
-        # yticks = np.array(start = -500, stop = 0, step = 50)
         plt.title("variation")
         plt.legend()
         plt.xticks(rotation=45)
